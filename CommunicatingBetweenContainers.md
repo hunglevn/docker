@@ -24,3 +24,27 @@ Secondly, Docker will update the HOSTS file of the container with an entry for o
 With a link created you can ping the source container in the same way as if it were a server running in your network.
 
 `docker run --link redis-server:redis alpine ping -c 1 redis`
+
+## Connect To App
+With a link created, applications can connect and communicate with the source container in the usual way, independent of the fact both services are running in containers
+### Example Application
+Here is a simple node.js application which connects to redis using the hostname redis.
+
+`docker run -d -p 3000:3000 --link redis-server:redis katacoda/redis-node-docker-example`
+
+### Test Connection
+Sending an HTTP request to the application will store the request in Redis and return a count. If you issue multiple requests, you'll see the counter increment as items are persisted.
+
+`curl docker:3000`
+
+## Connect to Redis CLI
+In the same way, you can connect source containers to applications, you can also connect them to their own CLI tools.
+### Launching Redis CLI
+The command below will launch an instance of the Redis-cli tool and connect to the redis server via its alias.
+
+`docker run -it --link redis-server:redis redis redis-cli -h redis`
+
+### Issuing Commands
+The command `KEYS *` will output the contents stored currently in the source redis container.
+Type `QUIT` to exit the CLI
+
