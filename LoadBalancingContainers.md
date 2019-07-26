@@ -32,3 +32,34 @@ You can make a request to the web server using curl
 ```http://localhost```
 
 As we have no containers, it will return a 503 error.
+
+# Single Host
+Nginx-proxy is now listening to events which Docker raises on start / stop. A sample website called katacoda/docker-http-server has been created which returns the machine name its running on. This allows us to test that our proxy is working as expected. Internally its a PHP and Apache2 application listening on port 80.
+
+## Starting Container
+
+For Nginx-proxy to start sending requests to a container you need to specify the VIRTUAL_HOST environment variable. This variable defines the domain where requests will come from and should be handled by the container.
+
+In this scenario we'll set our HOST to match our DEFAULT_HOST so it will accept all requests.
+
+```docker run -d -p 80 -e VIRTUAL_HOST=proxy.example katacoda/docker-http-server```
+
+## Testing
+Sometimes it takes a few seconds for NGINX to reload but if we execute a request to our proxy using `curl http://localhost` then the request will be handled by our container
+
+# Cluster
+We now have successfully created a container to handle our HTTP requests. If we launch a second container with the same VIRTUAL_HOST then nginx-proxy will configure the system in a round-robin load balanced scenario. This means that the first request will go to one container, the second request to a second container and then repeat in a circle. There is no limit to the number of nodes you can have running.
+## Command
+Launch a second container using the same command as we did before.
+
+```docker run -d -p 80 -e VIRTUAL_HOST=proxy.example katacoda/docker-http-server```
+
+## Testing
+If we execute a request to our proxy using `curl http://localhost` then the request will be handled by our first container. A second HTTP request will return a different machine name meaning it was dealt with by our second container.
+
+# Generated NGINX Configuration
+While nginx-proxy automatically creates and configures NGINX for us, if you're interested in what the final configuration looks like then you can output the complete config file with docker exec as shown below.
+
+```docker exec nginx cat /etc/nginx/conf.d/default.conf```
+
+Additional information about when it reloads configuration can be found in the logs using `docker logs nginx`
