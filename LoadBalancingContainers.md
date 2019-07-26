@@ -27,5 +27,8 @@ Use the command below to launch nginx-proxy.
 Because we're using a DEFAULT_HOST, any requests which come in will be directed to the container that has been assigned the HOST proxy.example.
 
 ## Request
-You can make a request to the web server using curl `http://localhost`. 
+You can make a request to the web server using curl 
+
+```http://localhost```
+
 As we have no containers, it will return a 503 error.
