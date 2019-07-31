@@ -13,8 +13,8 @@ Built image is stored in machine's local Docker image registry. Use this command
 
 # Useful commands:
 ## Remove all stopped containers:
-``` docker container prune
+``` docker container prune ```
 ## Stop all containers
-``` docker container stop $(docker container ls -aq)
+``` docker container stop $(docker container ls -aq) ```
 ## Remove all containers
-``` docker container rm $(docker container ls -aq)
+``` docker container rm $(docker container ls -aq) ```
