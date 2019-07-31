@@ -11,6 +11,16 @@ Built image is stored in machine's local Docker image registry. Use this command
 ## SSH into a running container
 ``` docker exec -it <container name> /bin/bash ```
 
+## Enable internet access on docker container:
+### Update deamon.json file
+\[/etc/docker/daemon.json\]
+```
+{
+    "dns": ["4.4.4.4", "8.8.8.8"]
+}
+```
+### Restart docker service:
+``` service restart docker ```
 # Useful commands:
 ## Remove all stopped containers:
 ``` docker container prune ```
